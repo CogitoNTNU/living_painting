@@ -58,10 +58,10 @@ In this section you describe how to use the program to obtain the desired result
 
 At elementum eu facilisis sed. Viverra nam libero justo laoreet sit amet cursus sit amet. At consectetur lorem donec massa sapien. Quis auctor elit sed vulputate mi. Netus et malesuada fames ac turpis. Nibh cras pulvinar mattis nunc sed blandit libero. Enim blandit volutpat maecenas volutpat blandit. Ut faucibus pulvinar elementum integer. Turpis egestas integer eget aliquet nibh praesent. Lacus laoreet non curabitur gravida arcu ac tortor. Consectetur adipiscing elit duis tristique. Id aliquet lectus proin nibh nisl condimentum id. Urna id volutpat lacus laoreet non curabitur gravida. Mauris pharetra et ultrices neque. Laoreet id donec ultrices tincidunt arcu non sodales neque.
 ### Groups
-Application: Espen
-Deep fakes: Martin, Magnus, Ann-Marie
-Style transfer: Ulrik, Arild
-Face detection: Didrik, Hans Jakob
+ * Application: Espen
+ * Deep fakes: Martin, Magnus, Ann-Marie
+ * Style transfer: Ulrik, Arild
+ * Face detection: Didrik, Hans Jakob
 
 ------
 <!--INSERT PICTURE OF TEAM-->
