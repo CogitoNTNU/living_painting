@@ -49,6 +49,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 #### Installation
 
 `pip install -r requirements.txt`
+
 https://akshay-jain.medium.com/pycharm-black-with-formatting-on-auto-save-4797972cf5de
 
 #### Usage
