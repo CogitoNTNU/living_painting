@@ -44,11 +44,8 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 ------
 
 #### Prerequisites
-In this section you put what is needed for the program to run.
-For example: OS version, programs, libraries, etc.  
-
-Eleifend quam adipiscing vitae proin sagittis nisl rhoncus. Tortor posuere ac ut consequat semper viverra nam libero. Malesuada fames ac turpis egestas integer eget aliquet nibh praesent. Orci dapibus ultrices in iaculis nunc. Morbi leo urna molestie at elementum eu facilisis. Elit sed vulputate mi sit amet mauris commodo quis imperdiet. Ullamcorper morbi tincidunt ornare massa eget. Condimentum lacinia quis vel eros donec ac odio tempor. Nisl vel pretium lectus quam id leo in vitae turpis. Augue mauris augue neque gravida in fermentum.
-
+ * Python 3.8
+ 
 #### Installation
 https://akshay-jain.medium.com/pycharm-black-with-formatting-on-auto-save-4797972cf5de
 
