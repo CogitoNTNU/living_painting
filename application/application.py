@@ -1,8 +1,13 @@
 import time
-import cv2
-import numpy as np
+from typing import Tuple
+import pygame
+from .frame_func import get_new_frame
 
 WINDOW_NAME = "Living painting"
+TARGET_FRAME_RATE = 30
+BACKGROUND_COLOR = (0, 0, 0)
+FULLSCREEN = True
+DEFAULT_RESOLUTION = (800, 800)  # if not fullscreen
 
 
 class TimeHandler:
@@ -26,51 +31,62 @@ class TimeHandler:
         return time.time() - self.start_time
 
 
-def setup(window_name):
-    """
-    TODO: Fix aspect ratio
-    """
-    print(f"{cv2.WND_PROP_FULLSCREEN:b}")
-    cv2.namedWindow(window_name, cv2.WINDOW_FREERATIO)
+def pygame_main_application(fullscreen: bool, resolution: Tuple[int]):
+    """Handle creating the pygame environment before starting,
+    and tearing it down when finished"""
 
-    cv2.setWindowProperty(window_name, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
+    def decorator(func):
+        def wrapper():
+            pygame.init()
+            clock = pygame.time.Clock()
+            if not fullscreen:
+                window_resolution = resolution
+                screen = pygame.display.set_mode(window_resolution)
+            else:
+                screen = pygame.display.set_mode([0, 0], pygame.FULLSCREEN)
+                info = pygame.display.Info()
+                window_resolution = info.current_w, info.current_h
+            func(screen, window_resolution, clock)
+            pygame.quit()
 
-    cv2.setWindowProperty(window_name, cv2.WND_PROP_ASPECT_RATIO, cv2.WINDOW_KEEPRATIO)
-    # cv2.setWindowProperty(window_name, cv2.WND_PROP_AUTOSIZE, cv2.WINDOW_AUTOSIZE)
+        return wrapper
+
+    return decorator
 
 
-def main_loop(window_name, framerate=100):
-    """The ui of the main application flow
-    TODO: connect to face detection
-    TODO: connect to preprocessed images"""
-    block_size = 50
-    framerate_calculator = TimeHandler(framerate)
-    while True:
-        framerate_calculator.reset()
-        time_delta = framerate_calculator.get_time_from_start()
+@pygame_main_application(fullscreen=FULLSCREEN, resolution=DEFAULT_RESOLUTION)
+def main(screen: pygame.Surface, resolution: Tuple[int], clock: pygame.time.Clock):
+    running = True
+    start_time = time.time()
+    while running:
+        # Did the user click the window close button?
 
-        center = (
-            np.array((500, 500))
-            + 200 * np.array((np.cos(time_delta), np.sin(time_delta)))
-        ).astype(int)
-        img = np.zeros((1000, 1000, 1))
+        current_time = (start_time - time.time()) * 1000  # in milliseconds
+        new_frame, needs_update = get_new_frame(
+            0.0, 0.0, current_time, clock.get_time(), resolution
+        )
 
-        img[
-            center[0] - block_size : center[0] + block_size,
-            center[1] - block_size : center[1] + block_size,
-        ] = 255
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    running = False
+        if needs_update:
+            frame = pygame.surfarray.make_surface(new_frame)
+            # Fill the background with white
 
-        cv2.imshow(window_name, img)
+        screen.fill(BACKGROUND_COLOR)
 
-        wait_time = framerate_calculator.get_wait_time()
+        # Draw a solid blue cle in the center
+        screen.blit(frame, (0, 0))
 
-        if wait_time < 1:
-            wait_time = 1
-        key = cv2.waitKey(wait_time)  # time in milliseconds to wait
-        if key == 27:
-            break
+        # Flip the display
+
+        pygame.display.flip()
+
+        clock.tick(TARGET_FRAME_RATE)
 
 
 def application():
-    setup(WINDOW_NAME)
-    main_loop(WINDOW_NAME)
+    main()
