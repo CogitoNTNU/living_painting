@@ -15,23 +15,21 @@ def get_new_frame(
     the different submodules together
     """
     needs_update = True
-    delta_time /= 100
     block_size = 50
-    time /= 1000
     width, height = resolution
-    print(delta_time)
-    center = (
-        np.array((width // 2, height // 2))
-        + 200 * np.array((np.cos(time), np.sin(time)))
+
+    center = np.array(
+        (
+            block_size / 2 + angle_x * (width - block_size),
+            block_size / 2 + angle_y * (height - block_size),
+        ),
     ).astype(int)
-    print(center)
+
     img = np.zeros((width, height), dtype=np.int)
-    # img = np.arange(resolution[0]).repeat(resolution[1], axis=0)
 
     img[
-        center[0] - block_size : center[0] + block_size,
-        center[1] - block_size : center[1] + block_size,
+        center[0] - block_size // 2 : center[0] + block_size // 2,
+        center[1] - block_size // 2 : center[1] + block_size // 2,
     ] = 255
 
-    print(img.shape)
     return img, needs_update

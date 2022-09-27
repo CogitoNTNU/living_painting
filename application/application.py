@@ -1,34 +1,14 @@
 import time
 from typing import Tuple
 import pygame
+import numpy as np
 from .frame_func import get_new_frame
 
 WINDOW_NAME = "Living painting"
-TARGET_FRAME_RATE = 30
+TARGET_FRAME_RATE = 60
 BACKGROUND_COLOR = (0, 0, 0)
 FULLSCREEN = True
 DEFAULT_RESOLUTION = (800, 800)  # if not fullscreen
-
-
-class TimeHandler:
-    def __init__(self, target_framerate: int = 24) -> None:
-        self.target_framerate = target_framerate
-        self.start_time = time.time()
-        self.frame_time = self.start_time
-
-    def get_wait_time(self) -> int:
-        """In milliseconds"""
-        end_time = time.time()
-        diff_time = self.frame_time - end_time
-        wait_time = int((1000 - diff_time * 1000) / self.target_framerate)
-        return wait_time
-
-    def reset(self):
-        self.frame_time = time.time()
-
-    def get_time_from_start(self) -> float:
-        """In seconds"""
-        return time.time() - self.start_time
 
 
 def pygame_main_application(fullscreen: bool, resolution: Tuple[int]):
@@ -63,7 +43,11 @@ def main(screen: pygame.Surface, resolution: Tuple[int], clock: pygame.time.Cloc
 
         current_time = (start_time - time.time()) * 1000  # in milliseconds
         new_frame, needs_update = get_new_frame(
-            0.0, 0.0, current_time, clock.get_time(), resolution
+            (np.cos(current_time / 500) ** 3 / 2 + 0.5),
+            (np.sin(current_time / 500) ** 3 / 2 + 0.5),
+            current_time,
+            clock.get_time(),
+            resolution,
         )
 
         for event in pygame.event.get():
