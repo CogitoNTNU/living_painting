@@ -2,7 +2,7 @@ import time
 from typing import Tuple
 import pygame
 import numpy as np
-from .frame_func import get_new_frame
+from .frame_func import get_new_frame, load_image_data
 
 WINDOW_NAME = "Living painting"
 TARGET_FRAME_RATE = 60
@@ -38,13 +38,16 @@ def pygame_main_application(fullscreen: bool, resolution: Tuple[int]):
 def main(screen: pygame.Surface, resolution: Tuple[int], clock: pygame.time.Clock):
     running = True
     start_time = time.time()
+    image_data = load_image_data()
+    offset = (0, 0)
     while running:
         # Did the user click the window close button?
 
         current_time = (start_time - time.time()) * 1000  # in milliseconds
-        new_frame, needs_update = get_new_frame(
-            (np.cos(current_time / 500) ** 3 / 2 + 0.5),
-            (np.sin(current_time / 500) ** 3 / 2 + 0.5),
+        new_frame, new_offset, needs_update = get_new_frame(
+            image_data,
+            (np.cos(current_time / 500) / 2 + 0.5),
+            0.5,
             current_time,
             clock.get_time(),
             resolution,
@@ -57,13 +60,14 @@ def main(screen: pygame.Surface, resolution: Tuple[int], clock: pygame.time.Cloc
                 if event.key == pygame.K_ESCAPE:
                     running = False
         if needs_update:
+            offset = new_offset
             frame = pygame.surfarray.make_surface(new_frame)
             # Fill the background with white
 
         screen.fill(BACKGROUND_COLOR)
 
         # Draw a solid blue cle in the center
-        screen.blit(frame, (0, 0))
+        screen.blit(frame, offset)
 
         # Flip the display
 

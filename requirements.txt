@@ -3,3 +3,4 @@ opencv-python
 flake8
 black
 pygame
+pandas
