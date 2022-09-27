@@ -1,7 +1,5 @@
 import cv2
-import sys
 
-# cascPath = sys.argv[1]
 cascPathEye = "..\\venv\\Lib\\site-packages\\cv2\\data\\haarcascade_eye.xml"
 cascPathFace = (
     "..\\venv\\Lib\\site-packages\\cv2\\data\\haarcascade_frontalface_alt2.xml"
