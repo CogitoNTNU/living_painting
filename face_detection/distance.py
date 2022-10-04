@@ -33,10 +33,15 @@ def Focal_Length_Finder(measured_distance, real_width, width_in_rf_image):
 
 
 # distance estimation function
-def Distance_finder(Focal_Length, real_face_width, face_width_in_frame, X, Y):
+def Distance_finder(Focal_Length, real_face_width, face_width_in_frame):
 
     distance = (real_face_width * Focal_Length) / face_width_in_frame
 
+    # return the distance
+    return distance
+
+
+def calculate_angle(distance, Focal_Length, X, Y):
     K = np.array([[Focal_Length, 0, 640], [0, Focal_Length, 512], [0, 0, 1]])
     P = np.array([X, Y, distance])
     p = K.dot(P)
@@ -48,9 +53,11 @@ def Distance_finder(Focal_Length, real_face_width, face_width_in_frame, X, Y):
 
     cos_angle = r1.dot(r2) / (np.linalg.norm(r1) * np.linalg.norm(r2))
     angle = np.arccos(cos_angle) * 180 / np.pi
-    angle = angle / (38)
-    # return the distance
-    return distance, angle
+
+    # normalize the angle
+    angle = (angle - 7) / (21 - 7)
+
+    return angle
 
 
 def face_data(image):
@@ -78,7 +85,7 @@ def face_data(image):
         face_width = w
 
     # return the face width in pixel
-    return face_width, x + w / 2, y - h / 2
+    return face_width, x + w / 2, y + h / 2
 
 
 # reading reference_image from directory
@@ -127,9 +134,7 @@ while True:
         # these arguments the Focal_Length,
         # Known_width(centimeters),
         # and Known_distance(centimeters)
-        Distance, angle = Distance_finder(
-            Focal_length_found, Known_width, face_width_in_frame, x, y
-        )
+        Distance = Distance_finder(Focal_length_found, Known_width, face_width_in_frame)
         distance_array[i] = Distance - 20
         # draw line as background of text
         cv2.line(frame, (30, 30), (230, 30), RED, 32)
@@ -139,6 +144,8 @@ while True:
         mean_dist = np.mean(distance_array)
         if i == len(distance_array) - 1:
             i = 0
+
+        angle = calculate_angle(mean_dist, Focal_length_found, x, y)
 
         cv2.putText(
             frame,
