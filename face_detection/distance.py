@@ -2,6 +2,11 @@
 import cv2
 import numpy as np
 
+"""
+distance.py
+
+Script for finding angle-position of face and doing face recognition
+"""
 
 # Colors
 GREEN = (0, 255, 0)

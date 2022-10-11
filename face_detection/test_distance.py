@@ -1,4 +1,12 @@
-from distance import *
+from distance import get_angle_from_frame
+import cv2
+import numpy as np
+
+"""
+test_distance.py
+
+Example on how to use distance.py
+"""
 
 cap = cv2.VideoCapture(0)
 i = 0
