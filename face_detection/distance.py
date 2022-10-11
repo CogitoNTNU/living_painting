@@ -20,7 +20,7 @@ def Focal_Length_Finder(measured_distance, real_width):
 
     # finding the focal length
     # reading reference_image from directory
-    ref_image = cv2.imread("testImage2.jpg")
+    ref_image = cv2.imread("refImage.jpg")
 
     # find the face width(pixels) in the reference_image
     ref_image_face_width, x, y = face_data(ref_image)
