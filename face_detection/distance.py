@@ -157,7 +157,7 @@ def main():
     # looping through frame, incoming from
     # camera/video
 
-    distance_array = np.zeros(24)
+    distance_array = np.ones(24) * 60
     i = 0
     while True:
 
