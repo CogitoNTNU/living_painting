@@ -28,7 +28,7 @@ def Focal_Length_Finder(measured_distance, real_width):
     ref_image = cv2.imread("face_detection/refImage.jpg")
 
     # find the face width(pixels) in the reference_image
-    ref_image_face_width, x, y = face_data(ref_image)
+    ref_image_face_width, _ = face_data(ref_image)
 
     # show the reference image
     # cv2.imshow("ref_image", ref_image)
@@ -38,19 +38,10 @@ def Focal_Length_Finder(measured_distance, real_width):
 
 
 # distance estimation function
-def Distance_finder(face_width_in_frame):
+def Distance_finder(face_width_in_frame, Focal_length):
     # distance from camera to object(face) measured
     # centimeter
-    Known_distance = 72  # 66
-
-    # width of face in the real world or Object Plane
-    # centimeter
     Known_width = 15
-
-    Focal_length = Focal_Length_Finder(
-        Known_distance,
-        Known_width,
-    )
 
     distance = (Known_width * Focal_length) / face_width_in_frame
 
@@ -103,25 +94,16 @@ def face_data(image):
         face_width = w
 
     # return the face width in pixel
-    return face_width, x + w / 2, y + h / 2
+    return face_width, faces
 
 
-def get_angle_from_frame(frame, i=0, distance_array=np.zeros(24)):
+def get_angle_from_frame(frame, Focal_length_found, i=0, distance_array=np.zeros(24)):
 
     # distance from camera to object(face) measured
     # centimeter
     Known_distance = 72  # 66
 
-    # width of face in the real world or Object Plane
-    # centimeter
-    Known_width = 15
-
-    face_width_in_frame, x, y = face_data(frame)
-
-    Focal_length_found = Focal_Length_Finder(
-        Known_distance,
-        Known_width,
-    )
+    face_width_in_frame, faces = face_data(frame)
 
     error = 20
     # check if the face is zero then not
@@ -135,12 +117,21 @@ def get_angle_from_frame(frame, i=0, distance_array=np.zeros(24)):
         # these arguments the Focal_Length,
         # Known_width(centimeters),
         # and Known_distance(centimeters)
-        Distance = Distance_finder(face_width_in_frame)
-        distance_array[i % 24] = Distance - error
+        min_dist = np.inf
+        for (x, y, h, w) in faces:
+            Distance = Distance_finder(w, Focal_length_found)
+            if Distance < min_dist:
+                min_dist = Distance
+                min_x, min_y = x, y
+                min_w, min_h = h, w
+
+        distance_array[i % 24] = min_dist - error
         # Drawing Text on the screen
         mean_dist = np.mean(distance_array)
 
-        angle = calculate_angle(mean_dist, Focal_length_found, x, y)
+        angle = calculate_angle(
+            mean_dist, Focal_length_found, min_x + min_w / 2, min_y + min_h / 2
+        )
 
     return angle, distance_array
 
@@ -148,6 +139,17 @@ def get_angle_from_frame(frame, i=0, distance_array=np.zeros(24)):
 def main():
     # initialize the camera object so that we
     # can get frame from it
+
+    Known_distance = 72  # 66
+
+    # width of face in the real world or Object Plane
+    # centimeter
+    Known_width = 15
+
+    Focal_length = Focal_Length_Finder(
+        Known_distance,
+        Known_width,
+    )
     cap = cv2.VideoCapture(0)
 
     # looping through frame, incoming from
@@ -165,7 +167,7 @@ def main():
         cv2.line(frame, (30, 30), (230, 30), BLACK, 28)
 
         angle, distance_array = get_angle_from_frame(
-            frame, i=i, distance_array=distance_array
+            frame, Focal_length, i=i, distance_array=distance_array
         )
         mean_dist = np.mean(distance_array)
 
