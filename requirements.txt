@@ -6,3 +6,5 @@ matplotlib==3.6.0
 torch==1.12.1 --extra-index-url https://download.pytorch.org/whl/cu113
 Pillow==9.2.0
 torchvision==0.13.1
+Imageio==2.8.0
+ipython==7.30.1
