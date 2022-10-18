@@ -8,10 +8,9 @@ import torch.optim as optim
 import torchvision.models as models
 import torchvision.transforms as transforms
 from PIL import Image
+from torchvision.models import VGG19_Weights
 
-device = torch.device(
-    "cpu"
-)  # torch.device("cuda" if torch.cuda.is_available() else "cpu")
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # desired size of the output image
 imsize = 512 if torch.cuda.is_available() else 256  # use small size if no gpu
@@ -247,7 +246,7 @@ def run_style_transfer(
 
 def main():
 
-    style_img = image_loader("preprocessing/style_transfer/images/mona_lisa.jpg")
+    style_img = image_loader("preprocessing/style_transfer/images/portrait.jpg")
     content_img = image_loader("preprocessing/style_transfer/images/anneborg.jpg")
 
     assert (
@@ -268,7 +267,7 @@ def main():
     # add the original input image to the figure:
     plt.figure()
     imshow(input_img, title="Input Image")
-    cnn = models.vgg19(pretrained=True).features.to(device).eval()
+    cnn = models.vgg19(weights=VGG19_Weights.IMAGENET1K_V1).features.to(device).eval()
 
     cnn_normalization_mean = torch.tensor([0.485, 0.456, 0.406]).to(device)
     cnn_normalization_std = torch.tensor([0.229, 0.224, 0.225]).to(device)
