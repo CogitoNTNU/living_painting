@@ -13,3 +13,7 @@
 
 What we can tweak:
 - Content loss vs. style loss
+
+## Notes
+- The picture to transfer the style from has a big impact on the result
+- Higher resolution doesn't necessarily mean a better result
