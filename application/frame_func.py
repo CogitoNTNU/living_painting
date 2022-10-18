@@ -15,13 +15,14 @@ def get_closest_image(df: pd.DataFrame, angle_x: float, angle_y: float):
     return df[["image_path"]].values[closest][0]
 
 
-def load_image(path, target_height, folder=Path("./preprocessed_data/images")):
-    image = cv2.imread(str(folder / path))
+def load_image(path, target_height, folder=Path("./preprocessed_data/images2")):
+    image = cv2.imread(str(path))
+
     image = image.swapaxes(0, 1)
     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-    height, width = image.shape[:2]
+    width, height = image.shape[:2]
     scale_factor = target_height / height
-    image = cv2.resize(image, (int(width * scale_factor), target_height))
+    image = cv2.resize(image, (target_height, int(width * scale_factor)))
     return image
 
 
