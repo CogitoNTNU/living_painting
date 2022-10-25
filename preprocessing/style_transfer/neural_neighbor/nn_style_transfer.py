@@ -36,9 +36,30 @@ def neural_neighbor_style_transfer(
     no_flip=False,
     content_loss=False,
     dont_colorize=False,
-    alpha=False,
+    alpha=0.0,
     size: Union[Literal[256], Literal[512], Literal[1024]] = 512,
 ):
+    """Perform neural neighbour style transfer on a single content image.
+
+    Args:
+        content_path (str): The path to the source image to change (change to style to).
+        style_path (str): The path to the image being the source of the style.
+        output_path (str): The output path of the image.
+        high_res (bool, optional): If the output image should be high_res (1024px).
+            Requires 12GB of VRAM. Defaults to False.
+        cpu (bool, optional): If the model should not use the GPU, and use the CPU
+            instead. Defaults to False.
+        no_flip (bool, optional): If the image should not be flipped. Defaults to False.
+        content_loss (bool, optional): If self-sim content loss should be used.
+            Defaults to False.
+        dont_colorize (bool, optional): If the function should not perform
+            color matching on the output picture (from the content picture).
+            Defaults to False.
+        alpha (float, optional): Number between 0 and 1 to subtract from content_weight.
+            Defaults to 0.0.
+        size (Union[Literal[256], Literal[512], Literal[1024]], optional): The output
+            size of the picture. 256 produces bad results. Defaults to 512.
+    """
     random.seed(0)
     np.random.seed(0)
     torch.manual_seed(0)
