@@ -3,3 +3,10 @@ opencv-python
 flake8
 black
 mediapipe
+facexlib>=0.2.5
+gfpgan>=1.3.5
+Pillow
+torch>=1.7
+torchvision
+tqdm
+basicsr
