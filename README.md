@@ -71,13 +71,18 @@ At elementum eu facilisis sed. Viverra nam libero justo laoreet sit amet cursus 
 
 Right to left: [@example](https://github.com/Jonrodtang)    [@example](https://github.com/Jonrodtang)    [@example](https://github.com/Jonrodtang)    [@example](https://github.com/Jonrodtang)  
 #### Leader(s):
-- [Jon Rødtang](https://github.com/Jonrodtang)
-- [Example exampleson](https://github.com/Jonrodtang)
+- [Espen Boman Fosseide](https://github.com/espenbfo)
+- [Martin Halleland](https://github.com/Halleland)
 
 #### Team members:
-- [Example exampleson](https://github.com/Jonrodtang)
--  [Examplette examplesen](https://github.com/Jonrodtang)
-- [Examplar examples](https://github.com/Jonrodtang)
+- [Ann-Marie Revillard](https://github.com/oddfjell)
+-  [Arild Strømsvåg](https://github.com/Arild-Sromsvag)
+
+-  [Didrik Lindløv Sand](https://github.com/didrik1812)
+-  [Hans Jakob Håland](https://github.com/hansjhaland)
+
+- [Magnus Rasmussen](https://github.com/pMag)
+- [Ulrik Røsby](https://github.com/ulrik2204)
 
 ### License
 ------
