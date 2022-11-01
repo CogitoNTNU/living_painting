@@ -4,11 +4,24 @@ import numpy as np
 import itertools
 import time
 
-
+# Colors
 GREEN = (0, 255, 0)
 RED = (0, 0, 255)
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
+
+# FaceMesh constants
+MIN_DETECTION_CONFIDENCE = 0.5
+MIN_TRACKING_CONFIDENCE = 0.5
+MAX_NUM_FACES = 1
+
+# Screen text constants
+X_ANGLE_X_COORD = 400
+X_ANGLE_Y_COORD = 35
+Y_ANGLE_X_COORD = 400
+Y_ANGLE_Y_COORD = 80
+FPS_X_COORD = 100
+FPS_Y_COORD = 35
 
 # defining the fonts
 fonts = cv2.FONT_HERSHEY_COMPLEX
@@ -37,10 +50,10 @@ def draw_mediapipe_face_mesh():
     fps_list = []
     mp_drawing.DrawingSpec(thickness=1, circle_radius=1)
     with mp_face_mesh.FaceMesh(
-        max_num_faces=1,
+        max_num_faces=MAX_NUM_FACES,
         refine_landmarks=True,
-        min_detection_confidence=0.5,
-        min_tracking_confidence=0.5,
+        min_detection_confidence=MIN_DETECTION_CONFIDENCE,
+        min_tracking_confidence=MIN_TRACKING_CONFIDENCE,
     ) as face_mesh:
         while cap.isOpened():
             t_start = time.time()
@@ -86,7 +99,7 @@ def draw_mediapipe_face_mesh():
                 cv2.putText(
                     image,
                     f"x: {round(coords[0], 2)}",
-                    (400, 35),
+                    (X_ANGLE_X_COORD, X_ANGLE_Y_COORD),
                     fonts,
                     0.6,
                     BLACK,
@@ -95,7 +108,7 @@ def draw_mediapipe_face_mesh():
                 cv2.putText(
                     image,
                     f"y: {round(coords[1], 2)}",
-                    (400, 80),
+                    (Y_ANGLE_X_COORD, Y_ANGLE_Y_COORD),
                     fonts,
                     0.6,
                     BLACK,
@@ -105,7 +118,7 @@ def draw_mediapipe_face_mesh():
             cv2.putText(
                 image,
                 f"fps: {round(np.mean(fps_list),2)}",
-                (100, 35),
+                (FPS_X_COORD, FPS_Y_COORD),
                 fonts,
                 0.6,
                 BLACK,
@@ -119,7 +132,7 @@ def draw_mediapipe_face_mesh():
     cap.release()
 
 
-class face_mesh_obj:
+class FaceMeshObj:
     def __init__(self) -> None:
         self.cap = cv2.VideoCapture(0)
         self.coords = np.zeros(3)
@@ -130,10 +143,10 @@ class face_mesh_obj:
 
     def detect_face(self):
         with mp_face_mesh.FaceMesh(
-            max_num_faces=1,
+            max_num_faces=MAX_NUM_FACES,
             refine_landmarks=True,
-            min_detection_confidence=0.5,
-            min_tracking_confidence=0.5,
+            min_detection_confidence=MIN_DETECTION_CONFIDENCE,
+            min_tracking_confidence=MIN_TRACKING_CONFIDENCE,
         ) as face_mesh:
             while self.cap.isOpened():
                 success, image = self.cap.read()
@@ -161,6 +174,6 @@ if __name__ == "__main__":
         draw_mediapipe_face_mesh()
     else:
         # test with object, get coordniates out while doing video-capturing
-        fmObj = face_mesh_obj()
+        fmObj = FaceMeshObj()
         for coords in fmObj.detect_face():
             print(coords[0])
