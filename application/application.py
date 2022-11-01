@@ -1,9 +1,9 @@
 import time
 from typing import Tuple
 import pygame
+
+from face_detection.face_detection_mediapipe import face_mesh_obj
 from .frame_func import get_new_frame, load_image_data
-from face_detection.distance import get_angle_from_frame
-import cv2
 
 WINDOW_NAME = "Living painting"
 TARGET_FRAME_RATE = 60
@@ -45,20 +45,20 @@ def main(screen: pygame.Surface, resolution: Tuple[int], clock: pygame.time.Cloc
 
     myfont = pygame.font.SysFont("monospace", 75)
 
-    cap = cv2.VideoCapture(0)
-    angle = 0.5
+    i = -1
+    fmObj = face_mesh_obj()
+
+    coord_iterator = iter(fmObj.detect_face())
     while running:
+        i += 1
+
+        x, y, z = next(coord_iterator)
         # Did the user click the window close button?
 
         current_time = (start_time - time.time()) * 1000  # in milliseconds
-        _, cameraframe = cap.read()
-        new_angle, distance_array = get_angle_from_frame(cameraframe)
-        if new_angle is not None:
-            angle = 1 - new_angle
-        print("Angle", angle)
         new_frame, new_offset, needs_update = get_new_frame(
             image_data,
-            angle,
+            x,
             0.5,
             current_time,
             clock.get_time(),
@@ -83,7 +83,7 @@ def main(screen: pygame.Surface, resolution: Tuple[int], clock: pygame.time.Cloc
 
         label = myfont.render("fps" + str(clock.get_fps())[:4], 1, BLACK)
         screen.blit(label, (0, 10))
-        label = myfont.render("angle" + str(angle)[:4], 1, BLACK)
+        label = myfont.render("angle" + str(round(x, 3)), 1, BLACK)
         screen.blit(label, (0, 100))
         # Flip the display
 
