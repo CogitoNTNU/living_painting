@@ -15,6 +15,7 @@ MIN_DETECTION_CONFIDENCE = 0.5
 MIN_TRACKING_CONFIDENCE = 0.5
 MAX_NUM_FACES = 1
 
+
 # Screen text constants
 X_ANGLE_X_COORD = 400
 X_ANGLE_Y_COORD = 35
@@ -31,10 +32,11 @@ mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
 mp_face_mesh = mp.solutions.face_mesh
 
+# coordinate constant
+RIGHT_EYE_INDEXES = list(set(itertools.chain(*mp_face_mesh.FACEMESH_RIGHT_IRIS)))
+
 
 def get_facemesh_coords(face_landmarks, img):
-
-    RIGHT_EYE_INDEXES = list(set(itertools.chain(*mp_face_mesh.FACEMESH_RIGHT_IRIS)))
 
     eye_landmark = face_landmarks.landmark[RIGHT_EYE_INDEXES[0]]
     """Extract FaceMesh landmark coordinates into 468x3 NumPy array."""
