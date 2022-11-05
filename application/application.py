@@ -59,7 +59,7 @@ def main(screen: pygame.Surface, resolution: Tuple[int], clock: pygame.time.Cloc
         new_frame, new_offset, needs_update = get_new_frame(
             image_data,
             x,
-            0.5,
+            y,
             current_time,
             clock.get_time(),
             resolution,
@@ -83,8 +83,10 @@ def main(screen: pygame.Surface, resolution: Tuple[int], clock: pygame.time.Cloc
 
         label = myfont.render("fps" + str(clock.get_fps())[:4], 1, BLACK)
         screen.blit(label, (0, 10))
-        label = myfont.render("angle" + str(round(x, 3)), 1, BLACK)
+        label = myfont.render("angle x" + str(round(x, 3)), 1, BLACK)
         screen.blit(label, (0, 100))
+        label = myfont.render("angle y" + str(round(1 - y, 3)), 1, BLACK)
+        screen.blit(label, (0, 190))
         # Flip the display
 
         pygame.display.flip()

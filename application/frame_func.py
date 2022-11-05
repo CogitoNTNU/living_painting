@@ -11,7 +11,10 @@ def load_image_data(folder=Path("./preprocessed_data")):
 
 
 def get_closest_image(df: pd.DataFrame, angle_x: float, angle_y: float):
-    closest = np.argmin(np.abs(df[["angle_x"]].values - angle_x))
+    closest = np.argmin(
+        np.abs(df[["angle_x"]].values - angle_x)
+        + np.abs((df[["angle_y"]].values - angle_y))
+    )
     return df[["image_path"]].values[closest][0]
 
 
