@@ -34,7 +34,7 @@ def preprocess():
 
 def preprocess_folder():
     start_index = 200
-    parent_dir = Path("C:/images")
+    parent_dir = Path("C:\\Users\\espen\\Documents\\new")
     files = list(parent_dir.glob("**/*"))
 
     image_store = Path("preprocessed_data/images3")
@@ -50,8 +50,8 @@ def preprocess_folder():
     angles_x = []
     angles_y = []
 
-    max_x = 121
-    max_y = 11
+    max_x = 201
+    max_y = 1
     filenames = []
     image_store.mkdir(exist_ok=True)
     for x in range(max_x):
