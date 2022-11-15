@@ -1,9 +1,6 @@
 <div id="top"></div>
 
-
-<!--INSERT PICTURE REPRESENTATIVE OF PROJECT-->
 <div align="center">
-<img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse4.mm.bing.net%2Fth%3Fid%3DOIP.Khns8mi5ov-qN64yFABHmAHaE7%26pid%3DApi&f=1"></img>
 </div>
 <p align="center">
 <a href="https://github.com/CogitoNTNU/README-template/blob/main/LICENSE" alt="LICENSE">
@@ -37,9 +34,8 @@
 
 ### About 
 -----
-This is a template README for projects by Cogito NTNU.   
+We wanted to use artificial intelligence technologies to create a living painting that reacts to its environment. This was a rather complex task, so we split the problem into three sub-problems. Firstly, we wanted to use deepfakeing technology to transfer any face onto the subject of the painting. Secondly, we wanted to use style transfer technology to transform the style of the painting to our liking. Thirdly, we wanted to use computer vision technology to allow the painting to follow its spectators by turning its head. closing sentence. Combining the solutions of these sub-tasks would result in a painting that gives the impression of being truly alive.
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 ### Getting started
 ------
 
@@ -52,11 +48,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 
 https://akshay-jain.medium.com/pycharm-black-with-formatting-on-auto-save-4797972cf5de
 
-#### Usage
-------
-In this section you describe how to use the program to obtain the desired result.  
 
-At elementum eu facilisis sed. Viverra nam libero justo laoreet sit amet cursus sit amet. At consectetur lorem donec massa sapien. Quis auctor elit sed vulputate mi. Netus et malesuada fames ac turpis. Nibh cras pulvinar mattis nunc sed blandit libero. Enim blandit volutpat maecenas volutpat blandit. Ut faucibus pulvinar elementum integer. Turpis egestas integer eget aliquet nibh praesent. Lacus laoreet non curabitur gravida arcu ac tortor. Consectetur adipiscing elit duis tristique. Id aliquet lectus proin nibh nisl condimentum id. Urna id volutpat lacus laoreet non curabitur gravida. Mauris pharetra et ultrices neque. Laoreet id donec ultrices tincidunt arcu non sodales neque.
 ### Groups
  * Application: Espen
  * Deep fakes: Martin, Magnus, Ann-Marie
@@ -66,7 +58,7 @@ At elementum eu facilisis sed. Viverra nam libero justo laoreet sit amet cursus 
 ------
 <!--INSERT PICTURE OF TEAM-->
 <div align="center">
-<img src="https://cogito-ntnu.no/static/img/projects/erpokerpfpwekwpkerwer.png"></img>
+<img src="readme_images/group_photo.jpg"></img>
 </div>
 
 Right to left: [@example](https://github.com/Jonrodtang)    [@example](https://github.com/Jonrodtang)    [@example](https://github.com/Jonrodtang)    [@example](https://github.com/Jonrodtang)  
