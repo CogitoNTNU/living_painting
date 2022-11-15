@@ -25,7 +25,7 @@ def Focal_Length_Finder(measured_distance, real_width):
 
     # finding the focal length
     # reading reference_image from directory
-    ref_image = cv2.imread("refImage.jpg")
+    ref_image = cv2.imread("face_detection/refImage.jpg")
 
     # find the face width(pixels) in the reference_image
     ref_image_face_width, _ = face_data(ref_image)
@@ -63,7 +63,6 @@ def calculate_angle(distance, Focal_Length, X, Y):
     angle = np.arccos(cos_angle) * 180 / np.pi
 
     # normalize the angle
-    angle = (angle - 7) / (21 - 7)
 
     return angle
 
@@ -71,15 +70,12 @@ def calculate_angle(distance, Focal_Length, X, Y):
 def face_data(image):
 
     # face detector object
-    face_detector = cv2.CascadeClassifier(
-        "..\\venv\\Lib\\site-packages\\cv2\\data\\haarcascade_frontalface_default.xml"
-    )
+    face_detector = cv2.CascadeClassifier("data/haarcascade_frontalface_default.xml")
 
     face_width = 0  # making face width to zero
 
     # converting color image to gray scale image
     gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-
     # detecting face in the image
     faces = face_detector.detectMultiScale(gray_image, 1.3, 5)
 
@@ -112,7 +108,7 @@ def get_angle_from_frame(frame, Focal_length_found, i=0, distance_array=np.zeros
     error = 20
     # check if the face is zero then not
     # find the distance
-    angle = 0.5
+    angle = None
     mean_dist = Known_distance
     if face_width_in_frame != 0:
 

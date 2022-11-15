@@ -164,7 +164,6 @@ class FaceMeshObj:
                 if results.multi_face_landmarks:
                     for face_landmarks in results.multi_face_landmarks:
                         self.coords = get_facemesh_coords(face_landmarks, image)
-                cv2.imshow("face mesh", image)
                 yield self.coords
                 self.close()
 
