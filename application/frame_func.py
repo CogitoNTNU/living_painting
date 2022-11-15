@@ -33,8 +33,6 @@ def get_new_frame(
     df: pd.DataFrame,
     angle_x: float,
     angle_y: float,
-    time: float,
-    delta_time: float,
     resolution: Tuple[int],
 ) -> Tuple[np.ndarray, bool]:
     """

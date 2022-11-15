@@ -36,6 +36,21 @@ def pygame_main_application(fullscreen: bool, resolution: Tuple[int]):
     return decorator
 
 
+def update_target(new_target, current_target, start_target_time, current_x, start_x):
+    max_dist = 0.01
+    if abs(new_target - current_target) < max_dist:
+        return current_target, start_target_time, start_x
+    return new_target, time.time(), current_x
+
+
+def lerp(target, start, percentage):
+    return start + (target - start) * percentage
+
+
+def lerp_percent(start_target_time, time_to_use):
+    return (time.time() - start_target_time) / time_to_use
+
+
 @pygame_main_application(fullscreen=FULLSCREEN, resolution=DEFAULT_RESOLUTION)
 def main(screen: pygame.Surface, resolution: Tuple[int], clock: pygame.time.Clock):
     running = True
@@ -44,24 +59,27 @@ def main(screen: pygame.Surface, resolution: Tuple[int], clock: pygame.time.Cloc
     offset = (0, 0)
 
     myfont = pygame.font.SysFont("monospace", 75)
+    time_to_use = 1
+    start_target_time = start_time
 
     i = -1
     fmObj = face_mesh_obj()
-
+    current_x, current_y = 0.5, 0.5
+    start_x = current_x
+    next_target_x = current_x
     coord_iterator = iter(fmObj.detect_face())
     while running:
         i += 1
-
-        x, y, z = next(coord_iterator)
-        # Did the user click the window close button?
-
-        current_time = (start_time - time.time()) * 1000  # in milliseconds
+        target_x, target_y, z = next(coord_iterator)
+        next_target_x, start_target_time, start_x = update_target(
+            target_x, next_target_x, start_target_time, current_x, start_x
+        )
+        p = lerp_percent(start_target_time, time_to_use)
+        current_x = lerp(next_target_x, start_x, p)
         new_frame, new_offset, needs_update = get_new_frame(
             image_data,
-            x,
-            y,
-            current_time,
-            clock.get_time(),
+            current_x,
+            current_y,
             resolution,
         )
 
@@ -83,9 +101,9 @@ def main(screen: pygame.Surface, resolution: Tuple[int], clock: pygame.time.Cloc
 
         label = myfont.render("fps" + str(clock.get_fps())[:4], 1, BLACK)
         screen.blit(label, (0, 10))
-        label = myfont.render("angle x" + str(round(x, 3)), 1, BLACK)
+        label = myfont.render("angle x" + str(round(current_x, 3)), 1, BLACK)
         screen.blit(label, (0, 100))
-        label = myfont.render("angle y" + str(round(1 - y, 3)), 1, BLACK)
+        label = myfont.render("angle y" + str(round(1 - current_y, 3)), 1, BLACK)
         screen.blit(label, (0, 190))
         # Flip the display
 
