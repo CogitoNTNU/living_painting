@@ -2,7 +2,7 @@ import time
 from typing import Tuple
 import pygame
 
-from face_detection.face_detection_mediapipe import face_mesh_obj
+from face_detection.face_detection_mediapipe import FaceMeshObj
 from .frame_func import get_new_frame, load_image_data
 
 WINDOW_NAME = "Living painting"
@@ -63,25 +63,25 @@ def main(screen: pygame.Surface, resolution: Tuple[int], clock: pygame.time.Cloc
     start_target_time = start_time
 
     i = -1
-    fmObj = face_mesh_obj()
+    fmObj = FaceMeshObj()
     current_x, current_y = 0.5, 0.5
     start_x = current_x
     next_target_x = current_x
     coord_iterator = iter(fmObj.detect_face())
     while running:
         i += 1
+        start_time = time.time()
         target_x, target_y, z = next(coord_iterator)
-        next_target_x, start_target_time, start_x = update_target(
-            target_x, next_target_x, start_target_time, current_x, start_x
-        )
-        p = lerp_percent(start_target_time, time_to_use)
-        current_x = lerp(next_target_x, start_x, p)
+        delta_time = time.time()-start_time
+        start_time = time.time()
         new_frame, new_offset, needs_update = get_new_frame(
             image_data,
-            current_x,
-            current_y,
+            1-target_x,
+            1-target_y,
             resolution,
         )
+        delta_time_2 = time.time()-start_time
+        print(f"times: {delta_time:.2f}, {delta_time_2:.2f}")
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -101,9 +101,9 @@ def main(screen: pygame.Surface, resolution: Tuple[int], clock: pygame.time.Cloc
 
         label = myfont.render("fps" + str(clock.get_fps())[:4], 1, BLACK)
         screen.blit(label, (0, 10))
-        label = myfont.render("angle x" + str(round(current_x, 3)), 1, BLACK)
+        label = myfont.render("angle x" + str(round(target_x, 3)), 1, BLACK)
         screen.blit(label, (0, 100))
-        label = myfont.render("angle y" + str(round(1 - current_y, 3)), 1, BLACK)
+        label = myfont.render("angle y" + str(round(1 - target_y, 3)), 1, BLACK)
         screen.blit(label, (0, 190))
         # Flip the display
 
