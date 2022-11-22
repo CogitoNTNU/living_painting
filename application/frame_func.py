@@ -1,3 +1,4 @@
+import functools
 from typing import Tuple
 import numpy as np
 from pathlib import Path
@@ -17,7 +18,7 @@ def get_closest_image(df: pd.DataFrame, angle_x: float, angle_y: float):
     )
     return df[["image_path"]].values[closest][0]
 
-
+@functools.cache
 def load_image(path, target_height, folder=Path("./preprocessed_data/images2")):
     image = cv2.imread(str(path))
 
@@ -34,7 +35,7 @@ def get_new_frame(
     angle_x: float,
     angle_y: float,
     resolution: Tuple[int],
-) -> Tuple[np.ndarray, bool]:
+) -> Tuple[np.ndarray, Tuple[int], bool]:
     """
     Gets the next frame of the application.
     This function is the controller that connects
