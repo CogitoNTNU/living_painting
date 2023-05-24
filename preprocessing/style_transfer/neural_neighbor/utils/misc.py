@@ -106,7 +106,7 @@ def load_path_for_pytorch(im_path, target_size=1000, side_comp=max, verbose=Fals
     print("fac", fac)
     h = int(x_dims[0] * fac)
     w = int(x_dims[1] * fac)
-    x = scl_spatial(x.unsqueeze(0), h, w)[0][:256, :256]
+    x = scl_spatial(x.unsqueeze(0), h, w)[0]
     print("x.shape", x.shape)
 
     if verbose:
