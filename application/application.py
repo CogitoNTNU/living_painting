@@ -1,9 +1,11 @@
 import time
 from typing import Tuple
 import pygame
+import numpy as np
 
 from face_detection.face_detection_mediapipe import FaceMeshObj
 from .frame_func import get_new_frame, load_image_data
+from .load_gif import load_gif
 
 WINDOW_NAME = "Living painting"
 TARGET_FRAME_RATE = 60
@@ -51,6 +53,16 @@ def lerp_percent(start_target_time, time_to_use):
     return (time.time() - start_target_time) / time_to_use
 
 
+animation_speed = 0.10
+background_animation_speed = 0.5
+transition_speed = 0.05
+
+
+def set_alpha(surf, image):
+    view = np.array(surf.get_view("A"), copy=False)
+    view[:, :] = image[:, :, 3]
+
+
 @pygame_main_application(fullscreen=FULLSCREEN, resolution=DEFAULT_RESOLUTION)
 def main(screen: pygame.Surface, resolution: Tuple[int], clock: pygame.time.Clock):
     running = True
@@ -58,6 +70,8 @@ def main(screen: pygame.Surface, resolution: Tuple[int], clock: pygame.time.Cloc
     image_data = load_image_data()
     offset = (0, 0)
 
+    gif_frames = load_gif("starrynight-seamless.gif", resolution)
+    num_gif_frames = len(gif_frames)
     myfont = pygame.font.SysFont("monospace", 75)
     time_to_use = 1
     start_target_time = start_time
@@ -65,24 +79,62 @@ def main(screen: pygame.Surface, resolution: Tuple[int], clock: pygame.time.Cloc
     i = -1
     fmObj = FaceMeshObj()
     current_x, current_y = 0.5, 0.5
-    start_x = current_x
-    next_target_x = current_x
-    coord_iterator = iter(fmObj.detect_face())
+    increasing = True
+    delta_time_2 = 0
+    target_x = 0
+
+    files = np.load("paths.npy")
+    num_styles = files.shape[0]
+    current_style = 0
+    style_progress = 0
+    next_style = np.random.choice(range(1, num_styles))
     while running:
         i += 1
         start_time = time.time()
-        target_x, target_y, z = next(coord_iterator)
-        delta_time = time.time()-start_time
+        # target_x, target_y, z = next(coord_iterator)
+
+        delta_time = time.time() - start_time
+
+        if increasing:
+            target_x, target_y, z = (
+                min(target_x + animation_speed * delta_time_2, 1),
+                0,
+                0,
+            )
+            if target_x == 1:
+                increasing = False
+        else:
+            target_x, target_y, z = (
+                max(target_x - animation_speed * delta_time_2, 0),
+                0,
+                0,
+            )
+            if target_x == 0:
+                increasing = True
+
+        style_progress += delta_time_2 * transition_speed
+        if style_progress > 1:
+            style_progress -= 1
+            current_style = next_style
+            next_style += 1
+            if next_style == num_styles:
+                next_style = 0
         start_time = time.time()
         new_frame, new_offset, needs_update = get_new_frame(
             image_data,
-            1-target_x,
-            1-target_y,
+            target_x,
+            files,
+            current_style,
+            next_style,
+            style_progress,
             resolution,
         )
-        delta_time_2 = time.time()-start_time
-        print(f"times: {delta_time:.2f}, {delta_time_2:.2f}")
+        delta_time_2 = time.time() - start_time
 
+        time_index = time.time() * background_animation_speed
+        time_index = int((time_index - int(time_index)) * num_gif_frames)
+        background_frame = gif_frames[time_index]
+        background_frame = pygame.surfarray.make_surface(background_frame[:, :, :3])
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -91,21 +143,23 @@ def main(screen: pygame.Surface, resolution: Tuple[int], clock: pygame.time.Cloc
                     running = False
         if needs_update:
             offset = new_offset
-            frame = pygame.surfarray.make_surface(new_frame)
-            # Fill the background with white
+            frame = pygame.surfarray.make_surface(new_frame[:, :, :3]).convert_alpha()
+            set_alpha(frame, new_frame)
 
         screen.fill(BACKGROUND_COLOR)
 
-        # Draw a solid blue cle in the center
+        screen.blit(background_frame, (0, 0))
+
         screen.blit(frame, offset)
 
-        label = myfont.render("fps" + str(clock.get_fps())[:4], 1, BLACK)
-        screen.blit(label, (0, 10))
-        label = myfont.render("angle x" + str(round(target_x, 3)), 1, BLACK)
-        screen.blit(label, (0, 100))
-        label = myfont.render("angle y" + str(round(1 - target_y, 3)), 1, BLACK)
-        screen.blit(label, (0, 190))
-        # Flip the display
+        # label = myfont.render("fps" + str(clock.get_fps())[:4], 1, BLACK)
+        # screen.blit(label, (0, 10))
+        # label = myfont.render("angle x" + str(round(target_x, 3)), 1, BLACK)
+        # screen.blit(label, (0, 100))
+        # label = myfont.render(
+        #    "style progress " + str(f"{style_progress:.2f}"), 1, BLACK
+        # )
+        # screen.blit(label, (0, 190))
 
         pygame.display.flip()
 

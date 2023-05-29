@@ -1,6 +1,7 @@
-from preprocessing.split_video import preprocess, preprocess_folder
+from preprocessing.split_video import preprocess, preprocess_folders
 
 
 if __name__ == "__main__":
     print("start")
-    preprocess_folder()
+    # preprocess()
+    preprocess_folders()
