@@ -30,7 +30,6 @@ def load_image(path, target_height, folder=Path("./preprocessed_data/images2")):
 
 
 def get_new_frame(
-    df: pd.DataFrame,
     angle_x: float,
     files,
     style_index,
@@ -54,18 +53,4 @@ def get_new_frame(
     image = np.floor((image * (1 - progress) + image2 * (progress))).astype(int)
     image_width = image.shape[0]
     offset = (int((width - image_width) / 2), 0)
-    center = np.array(
-        (
-            block_size / 2 + angle_x * (width - block_size),
-            block_size / 2,
-        ),
-    ).astype(int)
-
-    img = np.zeros((width, height), dtype=np.int)
-
-    img[
-        center[0] - block_size // 2 : center[0] + block_size // 2,
-        center[1] - block_size // 2 : center[1] + block_size // 2,
-    ] = 255
-
     return image, offset, needs_update

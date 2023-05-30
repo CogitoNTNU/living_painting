@@ -76,8 +76,6 @@ def preprocess_folders():
     )
     sub_folders = list(parent_dir.glob("*"))
 
-    spreadsheet_store = Path("preprocessed_data")
-
     files = []
     stems = []
     for i, sub_folder in enumerate(sub_folders):

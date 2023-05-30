@@ -4,7 +4,7 @@ import pygame
 import numpy as np
 
 from face_detection.face_detection_mediapipe import FaceMeshObj
-from .frame_func import get_new_frame, load_image_data
+from .frame_func import get_new_frame
 from .load_gif import load_gif
 
 WINDOW_NAME = "Living painting"
@@ -65,9 +65,9 @@ def set_alpha(surf, image):
 
 @pygame_main_application(fullscreen=FULLSCREEN, resolution=DEFAULT_RESOLUTION)
 def main(screen: pygame.Surface, resolution: Tuple[int], clock: pygame.time.Clock):
+    print(resolution)
     running = True
     start_time = time.time()
-    image_data = load_image_data()
     offset = (0, 0)
 
     gif_frames = load_gif("starrynight-seamless.gif", resolution)
@@ -121,7 +121,6 @@ def main(screen: pygame.Surface, resolution: Tuple[int], clock: pygame.time.Cloc
                 next_style = 0
         start_time = time.time()
         new_frame, new_offset, needs_update = get_new_frame(
-            image_data,
             target_x,
             files,
             current_style,
