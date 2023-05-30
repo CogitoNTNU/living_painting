@@ -46,13 +46,11 @@ def get_new_frame(
     needs_update = True
     block_size = 50
     width, height = resolution
-    print(files.shape[1] * angle_x)
     index = np.min((np.floor(files.shape[1] * angle_x).astype(int), files.shape[1] - 1))
     image_path = files[style_index][index]
     image_path_2 = files[next_style_index][index]
     image = load_image(image_path, height)
     image2 = load_image(image_path_2, height)
-    print(style_index, next_style_index)
     image = np.floor((image * (1 - progress) + image2 * (progress))).astype(int)
     image_width = image.shape[0]
     offset = (int((width - image_width) / 2), 0)
