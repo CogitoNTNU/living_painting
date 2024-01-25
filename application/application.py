@@ -10,9 +10,9 @@ from .load_gif import load_gif
 WINDOW_NAME = "Living painting"
 TARGET_FRAME_RATE = 60
 BACKGROUND_COLOR = (0, 0, 0)
-FULLSCREEN = True
-DEFAULT_RESOLUTION = (800, 800)  # if not fullscreen
-BLACK = (255, 0, 0)
+FULLSCREEN: bool = True
+DEFAULT_RESOLUTION: Tuple[int, int] = (800, 800)  # if not fullscreen
+BLACK: Tuple[int, int, int] = (255, 0, 0)
 
 
 def pygame_main_application(fullscreen: bool, resolution: Tuple[int]):
