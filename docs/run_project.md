@@ -8,6 +8,7 @@ One should make the background of the video file white. With treshold about 2
 
 ### With preprocessed images
 1. Download the preprocessed images folder and make sure it is unpacked.
+   - The location is not important, but the path to the folder should be known for the next step.
 2. Alter the `parent_dir` variable in the function `preprocess_folders()` in `preprocessing/split_video_video.py` to the root preprocessed image folder.
 ![where to change file](images/preprocess_path.png)
 1. Run 
