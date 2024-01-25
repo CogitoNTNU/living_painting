@@ -165,3 +165,5 @@ preprocessed_data
 preprocessed_images
 raw_style_transfers
 background_removed
+
+*.npy
