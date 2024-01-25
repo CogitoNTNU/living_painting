@@ -10,9 +10,15 @@ from .load_gif import load_gif
 WINDOW_NAME = "Living painting"
 TARGET_FRAME_RATE = 60
 BACKGROUND_COLOR = (0, 0, 0)
-FULLSCREEN = True
-DEFAULT_RESOLUTION = (800, 800)  # if not fullscreen
-BLACK = (255, 0, 0)
+FULLSCREEN:bool = True
+DEFAULT_RESOLUTION: tuple[int, int] = (800, 800)  # if not fullscreen
+BLACK: tuple[int, int, int] = (255, 0, 0)
+
+# Animation
+
+ANIMATION_SPEED: float = 0.10 # This controls the speed of the video
+BACKGROUND_ANIMATION_SPEED: float = 0.5 # This controls the speed of the background
+TRANSITION_SPEED: float = 0.05 # This controls the speed of the transition between styles
 
 
 def pygame_main_application(fullscreen: bool, resolution: Tuple[int]):
@@ -53,9 +59,6 @@ def lerp_percent(start_target_time, time_to_use):
     return (time.time() - start_target_time) / time_to_use
 
 
-animation_speed = 0.10
-background_animation_speed = 0.5
-transition_speed = 0.05
 
 
 def set_alpha(surf, image):
@@ -97,7 +100,7 @@ def main(screen: pygame.Surface, resolution: Tuple[int], clock: pygame.time.Cloc
 
         if increasing:
             target_x, target_y, z = (
-                min(target_x + animation_speed * delta_time_2, 1),
+                min(target_x + ANIMATION_SPEED * delta_time_2, 1),
                 0,
                 0,
             )
@@ -105,14 +108,14 @@ def main(screen: pygame.Surface, resolution: Tuple[int], clock: pygame.time.Cloc
                 increasing = False
         else:
             target_x, target_y, z = (
-                max(target_x - animation_speed * delta_time_2, 0),
+                max(target_x - ANIMATION_SPEED * delta_time_2, 0),
                 0,
                 0,
             )
             if target_x == 0:
                 increasing = True
 
-        style_progress += delta_time_2 * transition_speed
+        style_progress += delta_time_2 * TRANSITION_SPEED
         if style_progress > 1:
             style_progress -= 1
             current_style = next_style
@@ -130,7 +133,7 @@ def main(screen: pygame.Surface, resolution: Tuple[int], clock: pygame.time.Cloc
         )
         delta_time_2 = time.time() - start_time
 
-        time_index = time.time() * background_animation_speed
+        time_index = time.time() * BACKGROUND_ANIMATION_SPEED
         time_index = int((time_index - int(time_index)) * num_gif_frames)
         background_frame = gif_frames[time_index]
         background_frame = pygame.surfarray.make_surface(background_frame[:, :, :3])
