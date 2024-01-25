@@ -20,7 +20,7 @@ def pygame_main_application(fullscreen: bool, resolution: Tuple[int]):
     and tearing it down when finished"""
 
     def decorator(func):
-        def wrapper():
+        def wrapper(*args):
             pygame.init()
             clock = pygame.time.Clock()
             if not fullscreen:
@@ -30,7 +30,7 @@ def pygame_main_application(fullscreen: bool, resolution: Tuple[int]):
                 screen = pygame.display.set_mode([0, 0], pygame.FULLSCREEN)
                 info = pygame.display.Info()
                 window_resolution = info.current_w, info.current_h
-            func(screen, window_resolution, clock)
+            func(screen, window_resolution, clock, *args)
             pygame.quit()
 
         return wrapper
@@ -53,18 +53,20 @@ def lerp_percent(start_target_time, time_to_use):
     return (time.time() - start_target_time) / time_to_use
 
 
-animation_speed = 0.10
-background_animation_speed = 0.5
-transition_speed = 0.05
-
-
 def set_alpha(surf, image):
     view = np.array(surf.get_view("A"), copy=False)
     view[:, :] = image[:, :, 3]
 
 
 @pygame_main_application(fullscreen=FULLSCREEN, resolution=DEFAULT_RESOLUTION)
-def main(screen: pygame.Surface, resolution: Tuple[int], clock: pygame.time.Clock):
+def main(
+    screen: pygame.Surface,
+    resolution: Tuple[int],
+    clock: pygame.time.Clock,
+    animation_speed,
+    background_animation_speed,
+    transition_speed,
+):
     print(resolution)
     running = True
     start_time = time.time()
@@ -163,7 +165,3 @@ def main(screen: pygame.Surface, resolution: Tuple[int], clock: pygame.time.Cloc
         pygame.display.flip()
 
         clock.tick(TARGET_FRAME_RATE)
-
-
-def application():
-    main()
