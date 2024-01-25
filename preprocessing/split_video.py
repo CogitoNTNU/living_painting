@@ -35,41 +35,6 @@ def preprocess():
     df.to_csv(spreadsheet_store / "data.csv", index=False)
 
 
-def preprocess_folder():
-    parent_dir = Path(
-        r"C:\Users\espen\PycharmProjects\living_paintings\living_painting\background_removed"
-    )
-    files = list(parent_dir.glob("**/*"))
-
-    spreadsheet_store = Path("preprocessed_data")
-
-    length = len(files)
-
-    print(f"processing {length} images")
-    df = pd.DataFrame(columns=["image_path", "angle_x"])
-
-    spreadsheet_store.mkdir(exist_ok=True)
-
-    angles_x = []
-    angles_y = []
-
-    max_x = len(files)
-    max_y = 1
-    filenames = []
-    for x in range(max_x):
-        for y in range(max_y):
-            filename = str(files[x])
-            angle_x = x / max_x
-            angles_x.append(angle_x)
-            angle_y = 0.45 + (y / max_y) * 0.1
-            angles_y.append(angle_y)
-            filenames.append(filename)
-    df = pd.DataFrame(
-        {"image_path": filenames, "angle_x": angles_x, "angle_y": angles_y}
-    )
-    df.to_csv(spreadsheet_store / "data.csv", index=False)
-
-
 def preprocess_folders():
     parent_dir = Path(
         r"C:\Users\espen\PycharmProjects\living_paintings\living_painting\preprocessed_images"
